@@ -64,28 +64,42 @@ button { cursor: pointer; }
 .toolbar-title strong { color: #45586c; font: 600 12px 'Space Grotesk'; }
 .toolbar-title small { margin-top: 3px; color: #acb6bf; font: 9px 'DM Mono'; }
 .toolbar-actions { display: flex; align-items: center; gap: 13px; }
-.zoom-label { color: #9ca8b5; font: 10px 'DM Mono'; }
-.toolbar-actions button { border: 0; background: transparent; color: #9aa7b4; letter-spacing: 2px; }
-.canvas-wrap { position: relative; display: flex; justify-content: center; padding: 32px 28px 25px; background: #fafbfc; border: 1px solid #eef1f4; border-radius: 10px; overflow: hidden; }
-.canvas-ruler { position: absolute; color: #b8c1c9; font: 8px 'DM Mono'; }
-.top-ruler { top: 13px; left: 11%; right: 9%; display: flex; justify-content: space-between; }
-.side-ruler { top: 29px; bottom: 25px; left: 10px; display: flex; flex-direction: column; justify-content: space-between; writing-mode: vertical-rl; transform: rotate(180deg); }
-.field-canvas { position: relative; overflow: hidden; border: 1.5px solid #aebac6; border-radius: 3px; background: #fff; box-shadow: 0 8px 22px #455a6c14; }
-.grid-overlay { position: absolute; inset: 0; opacity: .65; background-image: linear-gradient(#e9eef3 1px, transparent 1px), linear-gradient(90deg, #e9eef3 1px, transparent 1px); background-size: 10% 10%; }
-.field-label { position: absolute; top: 3%; left: 2.5%; display: flex; align-items: baseline; gap: 8px; color: #bdc7d0; font: 8px 'DM Mono'; letter-spacing: .7px; pointer-events: none; }
+.zoom-controls { display: flex; align-items: center; gap: 1px; padding: 2px; border: 1px solid #e4e9ee; border-radius: 8px; background: #f4f7fa; }
+.zoom-controls button { padding: 4px 8px; border: 0; border-radius: 6px; background: transparent; color: #758596; font-size: 11px; line-height: 1; letter-spacing: 0; }
+.zoom-controls button:hover:not(:disabled) { background: #fff; color: #ef795f; box-shadow: 0 1px 4px #2b416214; }
+.zoom-controls button:disabled { color: #c7d0d9; cursor: default; }
+.zoom-controls .zoom-value { min-width: 47px; padding: 4px 4px; color: #5f7487; font: 500 10px 'DM Mono'; text-align: center; }
+.zoom-controls .zoom-fit { font-size: 9px; color: #93a1ae; }
+.toolbar-actions > button { border: 0; background: transparent; color: #9aa7b4; letter-spacing: 2px; }
+.canvas-viewport { position: relative; height: 470px; overflow: hidden; background: #fafbfc; border: 1px solid #eef1f4; border-radius: 10px; cursor: grab; touch-action: none; user-select: none; }
+.canvas-viewport.is-panning, .canvas-viewport.is-panning * { cursor: grabbing !important; }
+.canvas-ruler { position: absolute; z-index: 6; overflow: hidden; background: #fafbfcf5; pointer-events: none; }
+.top-ruler { top: 0; left: 20px; right: 0; height: 20px; border-bottom: 1px solid #e9eef3; }
+.side-ruler { top: 20px; left: 0; bottom: 0; width: 20px; border-right: 1px solid #e9eef3; }
+.ruler-corner { position: absolute; z-index: 7; top: 0; left: 0; width: 20px; height: 20px; background: #f2f5f8; border-right: 1px solid #e9eef3; border-bottom: 1px solid #e9eef3; pointer-events: none; }
+.ruler-tick { position: absolute; color: #9aa6b1; font: 8px 'DM Mono'; white-space: nowrap; }
+.ruler-tick.is-outside { color: #d3dbe3; }
+.top-ruler .ruler-tick { top: 3px; transform: translateX(-50%); }
+.top-ruler .ruler-tick::after { content: ''; position: absolute; bottom: -4px; left: 50%; width: 1px; height: 5px; background: #c2ccd6; transform: translateX(-50%); }
+.side-ruler .ruler-tick { left: 0; width: 18px; text-align: right; transform: translateY(-50%); }
+.side-ruler .ruler-tick::after { content: ''; position: absolute; right: -1px; top: 50%; width: 5px; height: 1px; background: #c2ccd6; transform: translateY(-50%); }
+.field-world { position: absolute; left: 0; top: 0; will-change: transform; }
+.field-canvas { position: relative; width: 100%; height: 100%; overflow: hidden; border: 1.5px solid #aebac6; border-radius: 3px; background-color: #fff; background-image: linear-gradient(#e7edf3 1px, transparent 1px), linear-gradient(90deg, #e7edf3 1px, transparent 1px); box-shadow: 0 8px 22px #455a6c14; }
+.field-label { position: absolute; top: 3%; left: 2.5%; display: flex; align-items: baseline; gap: 8px; color: #bdc7d0; font: 8px 'DM Mono'; letter-spacing: .7px; pointer-events: none; transform: scale(var(--zoom, 1)); transform-origin: left top; }
 .field-label strong { color: #d1d8df; font-weight: 400; }
 .canvas-element { position: absolute; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; padding: 7px 10px; border: 1px solid #b6c7d6; border-radius: 6px; color: #496073; text-align: left; box-shadow: 0 3px 7px #4d627315; transition: box-shadow .15s, border-color .15s, filter .15s; user-select: none; touch-action: none; z-index: 2; }
+.element-ui { display: block; transform: scale(var(--zoom, 1)); transform-origin: left top; }
 .canvas-element:hover, .canvas-element.is-selected { z-index: 4; border: 1.5px solid #ef795f; box-shadow: 0 0 0 3px #ef795f28, 0 5px 12px #4d627326; }
 .canvas-element.is-overlap { border-color: #e86b58; background-image: repeating-linear-gradient(135deg, #e86b5813 0, #e86b5813 4px, transparent 4px, transparent 8px); }
 .canvas-element.is-channel { border-color: #e5ae58; }
 .canvas-element.is-out { outline: 2px dashed #ef795f; filter: saturate(1.2); }
-.element-icon { font-size: 15px; line-height: 1; opacity: .8; }
-.element-name { max-width: 100%; overflow: hidden; margin-top: 4px; font: 600 clamp(8px, .8vw, 11px) 'Space Grotesk'; white-space: nowrap; text-overflow: ellipsis; }
-.canvas-element small { margin-top: 2px; opacity: .68; font: 8px 'DM Mono'; }
+.element-icon { display: block; font-size: 15px; line-height: 1; opacity: .8; }
+.element-name { display: block; max-width: 100%; overflow: hidden; margin-top: 4px; font: 600 clamp(8px, .8vw, 11px) 'Space Grotesk'; white-space: nowrap; text-overflow: ellipsis; }
+.canvas-element small { display: block; margin-top: 2px; opacity: .68; font: 8px 'DM Mono'; }
 .issue-dot { position: absolute; top: -7px; right: -7px; width: 16px; height: 16px; display: grid; place-items: center; border: 2px solid #fff; border-radius: 50%; background: #ef795f; color: #fff; font: 700 9px 'DM Mono'; }
 .path-layer { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 3; pointer-events: none; overflow: visible; }
 .mode-path .canvas-element { filter: saturate(.8); }
-.axis-hint { position: absolute; right: 2%; bottom: 3%; color: #c1c9d0; font: 8px 'DM Mono'; pointer-events: none; }
+.axis-hint { position: absolute; right: 2%; bottom: 3%; color: #c1c9d0; font: 8px 'DM Mono'; pointer-events: none; transform: scale(var(--zoom, 1)); transform-origin: right bottom; }
 .canvas-legend { display: flex; justify-content: center; gap: 20px; padding-top: 15px; color: #a7b1bb; font-size: 9px; }
 .canvas-legend span { display: flex; align-items: center; gap: 5px; }
 .legend-dot { width: 6px; height: 6px; display: block; border-radius: 50%; }
